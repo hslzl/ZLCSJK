@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.CQJjFlowSu.dao.TFlowDataMapper" >
+  <resultMap id="BaseResultMap" type="com.CQJjFlowSu.db.TFlowData" >
+    <id column="F_ID" property="fId" jdbcType="VARCHAR" />
+    <result column="F_FLOW_ID" property="fFlowId" jdbcType="VARCHAR" />
+    <result column="F_IP" property="fIp" jdbcType="VARCHAR" />
+    <result column="F_STATUS" property="fStatus" jdbcType="VARCHAR" />
+    <result column="F_RECEIVE_DATE" property="fReceiveDate" jdbcType="VARCHAR" />
+    <result column="F_DATA" property="fData" jdbcType="VARCHAR" />
+    <result column="F_ELECTRI" property="fElectri" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    F_ID, F_FLOW_ID, F_IP, F_STATUS, F_RECEIVE_DATE, F_DATA, F_ELECTRI
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.CQJjFlowSu.db.TFlowDataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_flow_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_flow_data
+    where F_ID = #{fId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_flow_data
+    where F_ID = #{fId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.CQJjFlowSu.db.TFlowDataExample" >
+    delete from t_flow_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.CQJjFlowSu.db.TFlowData" >
+    insert into t_flow_data (F_ID, F_FLOW_ID, F_IP, 
+      F_STATUS, F_RECEIVE_DATE, F_DATA, 
+      F_ELECTRI)
+    values (#{fId,jdbcType=VARCHAR}, #{fFlowId,jdbcType=VARCHAR}, #{fIp,jdbcType=VARCHAR}, 
+      #{fStatus,jdbcType=VARCHAR}, #{fReceiveDate,jdbcType=VARCHAR}, #{fData,jdbcType=VARCHAR}, 
+      #{fElectri,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.CQJjFlowSu.db.TFlowData" >
+    insert into t_flow_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fId != null" >
+        F_ID,
+      </if>
+      <if test="fFlowId != null" >
+        F_FLOW_ID,
+      </if>
+      <if test="fIp != null" >
+        F_IP,
+      </if>
+      <if test="fStatus != null" >
+        F_STATUS,
+      </if>
+      <if test="fReceiveDate != null" >
+        F_RECEIVE_DATE,
+      </if>
+      <if test="fData != null" >
+        F_DATA,
+      </if>
+      <if test="fElectri != null" >
+        F_ELECTRI,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fId != null" >
+        #{fId,jdbcType=VARCHAR},
+      </if>
+      <if test="fFlowId != null" >
+        #{fFlowId,jdbcType=VARCHAR},
+      </if>
+      <if test="fIp != null" >
+        #{fIp,jdbcType=VARCHAR},
+      </if>
+      <if test="fStatus != null" >
+        #{fStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="fReceiveDate != null" >
+        #{fReceiveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="fData != null" >
+        #{fData,jdbcType=VARCHAR},
+      </if>
+      <if test="fElectri != null" >
+        #{fElectri,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.CQJjFlowSu.db.TFlowDataExample" resultType="java.lang.Integer" >
+    select count(*) from t_flow_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_flow_data
+    <set >
+      <if test="record.fId != null" >
+        F_ID = #{record.fId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fFlowId != null" >
+        F_FLOW_ID = #{record.fFlowId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fIp != null" >
+        F_IP = #{record.fIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fStatus != null" >
+        F_STATUS = #{record.fStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fReceiveDate != null" >
+        F_RECEIVE_DATE = #{record.fReceiveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fData != null" >
+        F_DATA = #{record.fData,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fElectri != null" >
+        F_ELECTRI = #{record.fElectri,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_flow_data
+    set F_ID = #{record.fId,jdbcType=VARCHAR},
+      F_FLOW_ID = #{record.fFlowId,jdbcType=VARCHAR},
+      F_IP = #{record.fIp,jdbcType=VARCHAR},
+      F_STATUS = #{record.fStatus,jdbcType=VARCHAR},
+      F_RECEIVE_DATE = #{record.fReceiveDate,jdbcType=VARCHAR},
+      F_DATA = #{record.fData,jdbcType=VARCHAR},
+      F_ELECTRI = #{record.fElectri,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.CQJjFlowSu.db.TFlowData" >
+    update t_flow_data
+    <set >
+      <if test="fFlowId != null" >
+        F_FLOW_ID = #{fFlowId,jdbcType=VARCHAR},
+      </if>
+      <if test="fIp != null" >
+        F_IP = #{fIp,jdbcType=VARCHAR},
+      </if>
+      <if test="fStatus != null" >
+        F_STATUS = #{fStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="fReceiveDate != null" >
+        F_RECEIVE_DATE = #{fReceiveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="fData != null" >
+        F_DATA = #{fData,jdbcType=VARCHAR},
+      </if>
+      <if test="fElectri != null" >
+        F_ELECTRI = #{fElectri,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where F_ID = #{fId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.CQJjFlowSu.db.TFlowData" >
+    update t_flow_data
+    set F_FLOW_ID = #{fFlowId,jdbcType=VARCHAR},
+      F_IP = #{fIp,jdbcType=VARCHAR},
+      F_STATUS = #{fStatus,jdbcType=VARCHAR},
+      F_RECEIVE_DATE = #{fReceiveDate,jdbcType=VARCHAR},
+      F_DATA = #{fData,jdbcType=VARCHAR},
+      F_ELECTRI = #{fElectri,jdbcType=VARCHAR}
+    where F_ID = #{fId,jdbcType=VARCHAR}
+  </update>
+</mapper>

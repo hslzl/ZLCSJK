@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.CQJjFlowSu.dao.TSenesorMapper" >
+  <resultMap id="BaseResultMap" type="com.CQJjFlowSu.db.TSenesor" >
+    <result column="F_GUID" property="fGuid" jdbcType="VARCHAR" />
+    <result column="F_ID" property="fId" jdbcType="VARCHAR" />
+    <result column="F_XH" property="fXh" jdbcType="VARCHAR" />
+    <result column="F_TYPE" property="fType" jdbcType="VARCHAR" />
+    <result column="F_JD" property="fJd" jdbcType="VARCHAR" />
+    <result column="F_WD" property="fWd" jdbcType="VARCHAR" />
+    <result column="F_STATUS" property="fStatus" jdbcType="VARCHAR" />
+    <result column="F_INSTALL_DATE" property="fInstallDate" jdbcType="VARCHAR" />
+    <result column="F_REPAIR_DATE" property="fRepairDate" jdbcType="VARCHAR" />
+    <result column="F_ELECTRIC" property="fElectric" jdbcType="VARCHAR" />
+    <result column="F_LAST_DATA_TIME" property="fLastDataTime" jdbcType="VARCHAR" />
+    <result column="F_SIM_NUMBER" property="fSimNumber" jdbcType="VARCHAR" />
+    <result column="F_OPERATOR" property="fOperator" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    F_GUID, F_ID, F_XH, F_TYPE, F_JD, F_WD, F_STATUS, F_INSTALL_DATE, F_REPAIR_DATE, 
+    F_ELECTRIC, F_LAST_DATA_TIME, F_SIM_NUMBER, F_OPERATOR
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.CQJjFlowSu.db.TSenesorExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_senesor
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.CQJjFlowSu.db.TSenesorExample" >
+    delete from t_senesor
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.CQJjFlowSu.db.TSenesor" >
+    insert into t_senesor (F_GUID, F_ID, F_XH, 
+      F_TYPE, F_JD, F_WD, F_STATUS, 
+      F_INSTALL_DATE, F_REPAIR_DATE, F_ELECTRIC, 
+      F_LAST_DATA_TIME, F_SIM_NUMBER, F_OPERATOR
+      )
+    values (#{fGuid,jdbcType=VARCHAR}, #{fId,jdbcType=VARCHAR}, #{fXh,jdbcType=VARCHAR}, 
+      #{fType,jdbcType=VARCHAR}, #{fJd,jdbcType=VARCHAR}, #{fWd,jdbcType=VARCHAR}, #{fStatus,jdbcType=VARCHAR}, 
+      #{fInstallDate,jdbcType=VARCHAR}, #{fRepairDate,jdbcType=VARCHAR}, #{fElectric,jdbcType=VARCHAR}, 
+      #{fLastDataTime,jdbcType=VARCHAR}, #{fSimNumber,jdbcType=VARCHAR}, #{fOperator,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.CQJjFlowSu.db.TSenesor" >
+    insert into t_senesor
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fGuid != null" >
+        F_GUID,
+      </if>
+      <if test="fId != null" >
+        F_ID,
+      </if>
+      <if test="fXh != null" >
+        F_XH,
+      </if>
+      <if test="fType != null" >
+        F_TYPE,
+      </if>
+      <if test="fJd != null" >
+        F_JD,
+      </if>
+      <if test="fWd != null" >
+        F_WD,
+      </if>
+      <if test="fStatus != null" >
+        F_STATUS,
+      </if>
+      <if test="fInstallDate != null" >
+        F_INSTALL_DATE,
+      </if>
+      <if test="fRepairDate != null" >
+        F_REPAIR_DATE,
+      </if>
+      <if test="fElectric != null" >
+        F_ELECTRIC,
+      </if>
+      <if test="fLastDataTime != null" >
+        F_LAST_DATA_TIME,
+      </if>
+      <if test="fSimNumber != null" >
+        F_SIM_NUMBER,
+      </if>
+      <if test="fOperator != null" >
+        F_OPERATOR,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fGuid != null" >
+        #{fGuid,jdbcType=VARCHAR},
+      </if>
+      <if test="fId != null" >
+        #{fId,jdbcType=VARCHAR},
+      </if>
+      <if test="fXh != null" >
+        #{fXh,jdbcType=VARCHAR},
+      </if>
+      <if test="fType != null" >
+        #{fType,jdbcType=VARCHAR},
+      </if>
+      <if test="fJd != null" >
+        #{fJd,jdbcType=VARCHAR},
+      </if>
+      <if test="fWd != null" >
+        #{fWd,jdbcType=VARCHAR},
+      </if>
+      <if test="fStatus != null" >
+        #{fStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="fInstallDate != null" >
+        #{fInstallDate,jdbcType=VARCHAR},
+      </if>
+      <if test="fRepairDate != null" >
+        #{fRepairDate,jdbcType=VARCHAR},
+      </if>
+      <if test="fElectric != null" >
+        #{fElectric,jdbcType=VARCHAR},
+      </if>
+      <if test="fLastDataTime != null" >
+        #{fLastDataTime,jdbcType=VARCHAR},
+      </if>
+      <if test="fSimNumber != null" >
+        #{fSimNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fOperator != null" >
+        #{fOperator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.CQJjFlowSu.db.TSenesorExample" resultType="java.lang.Integer" >
+    select count(*) from t_senesor
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_senesor
+    <set >
+      <if test="record.fGuid != null" >
+        F_GUID = #{record.fGuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fId != null" >
+        F_ID = #{record.fId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fXh != null" >
+        F_XH = #{record.fXh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fType != null" >
+        F_TYPE = #{record.fType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fJd != null" >
+        F_JD = #{record.fJd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fWd != null" >
+        F_WD = #{record.fWd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fStatus != null" >
+        F_STATUS = #{record.fStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fInstallDate != null" >
+        F_INSTALL_DATE = #{record.fInstallDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fRepairDate != null" >
+        F_REPAIR_DATE = #{record.fRepairDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fElectric != null" >
+        F_ELECTRIC = #{record.fElectric,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fLastDataTime != null" >
+        F_LAST_DATA_TIME = #{record.fLastDataTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fSimNumber != null" >
+        F_SIM_NUMBER = #{record.fSimNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fOperator != null" >
+        F_OPERATOR = #{record.fOperator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_senesor
+    set F_GUID = #{record.fGuid,jdbcType=VARCHAR},
+      F_ID = #{record.fId,jdbcType=VARCHAR},
+      F_XH = #{record.fXh,jdbcType=VARCHAR},
+      F_TYPE = #{record.fType,jdbcType=VARCHAR},
+      F_JD = #{record.fJd,jdbcType=VARCHAR},
+      F_WD = #{record.fWd,jdbcType=VARCHAR},
+      F_STATUS = #{record.fStatus,jdbcType=VARCHAR},
+      F_INSTALL_DATE = #{record.fInstallDate,jdbcType=VARCHAR},
+      F_REPAIR_DATE = #{record.fRepairDate,jdbcType=VARCHAR},
+      F_ELECTRIC = #{record.fElectric,jdbcType=VARCHAR},
+      F_LAST_DATA_TIME = #{record.fLastDataTime,jdbcType=VARCHAR},
+      F_SIM_NUMBER = #{record.fSimNumber,jdbcType=VARCHAR},
+      F_OPERATOR = #{record.fOperator,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+</mapper>

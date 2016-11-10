@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.CQJjFlowSu.dao.TFlowMapper" >
+  <resultMap id="BaseResultMap" type="com.CQJjFlowSu.db.TFlow" >
+    <id column="F_GUID" property="fGuid" jdbcType="VARCHAR" />
+    <result column="F_BT" property="fBt" jdbcType="VARCHAR" />
+    <result column="F_LENGTH" property="fLength" jdbcType="INTEGER" />
+    <result column="F_SJBXU" property="fSjbxu" jdbcType="VARCHAR" />
+    <result column="F_SERVER_IP" property="fServerIp" jdbcType="VARCHAR" />
+    <result column="F_LOCALHOST" property="fLocalhost" jdbcType="VARCHAR" />
+    <result column="F_TYPE" property="fType" jdbcType="VARCHAR" />
+    <result column="F_VERSION" property="fVersion" jdbcType="VARCHAR" />
+    <result column="F_ORDER" property="fOrder" jdbcType="VARCHAR" />
+    <result column="F_NET_DATE" property="fNetDate" jdbcType="VARCHAR" />
+    <result column="F_STATUS" property="fStatus" jdbcType="VARCHAR" />
+    <result column="F_ELETRI" property="fEletri" jdbcType="VARCHAR" />
+    <result column="F_GPRS_LAC" property="fGprsLac" jdbcType="VARCHAR" />
+    <result column="F_DATA_NUM" property="fDataNum" jdbcType="INTEGER" />
+    <result column="F_CRC" property="fCrc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    F_GUID, F_BT, F_LENGTH, F_SJBXU, F_SERVER_IP, F_LOCALHOST, F_TYPE, F_VERSION, F_ORDER, 
+    F_NET_DATE, F_STATUS, F_ELETRI, F_GPRS_LAC, F_DATA_NUM, F_CRC
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.CQJjFlowSu.db.TFlowExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_flow
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_flow
+    where F_GUID = #{fGuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_flow
+    where F_GUID = #{fGuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.CQJjFlowSu.db.TFlowExample" >
+    delete from t_flow
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.CQJjFlowSu.db.TFlow" >
+    insert into t_flow (F_GUID, F_BT, F_LENGTH, 
+      F_SJBXU, F_SERVER_IP, F_LOCALHOST, 
+      F_TYPE, F_VERSION, F_ORDER, 
+      F_NET_DATE, F_STATUS, F_ELETRI, 
+      F_GPRS_LAC, F_DATA_NUM, F_CRC
+      )
+    values (#{fGuid,jdbcType=VARCHAR}, #{fBt,jdbcType=VARCHAR}, #{fLength,jdbcType=INTEGER}, 
+      #{fSjbxu,jdbcType=VARCHAR}, #{fServerIp,jdbcType=VARCHAR}, #{fLocalhost,jdbcType=VARCHAR}, 
+      #{fType,jdbcType=VARCHAR}, #{fVersion,jdbcType=VARCHAR}, #{fOrder,jdbcType=VARCHAR}, 
+      #{fNetDate,jdbcType=VARCHAR}, #{fStatus,jdbcType=VARCHAR}, #{fEletri,jdbcType=VARCHAR}, 
+      #{fGprsLac,jdbcType=VARCHAR}, #{fDataNum,jdbcType=INTEGER}, #{fCrc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.CQJjFlowSu.db.TFlow" >
+    insert into t_flow
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fGuid != null" >
+        F_GUID,
+      </if>
+      <if test="fBt != null" >
+        F_BT,
+      </if>
+      <if test="fLength != null" >
+        F_LENGTH,
+      </if>
+      <if test="fSjbxu != null" >
+        F_SJBXU,
+      </if>
+      <if test="fServerIp != null" >
+        F_SERVER_IP,
+      </if>
+      <if test="fLocalhost != null" >
+        F_LOCALHOST,
+      </if>
+      <if test="fType != null" >
+        F_TYPE,
+      </if>
+      <if test="fVersion != null" >
+        F_VERSION,
+      </if>
+      <if test="fOrder != null" >
+        F_ORDER,
+      </if>
+      <if test="fNetDate != null" >
+        F_NET_DATE,
+      </if>
+      <if test="fStatus != null" >
+        F_STATUS,
+      </if>
+      <if test="fEletri != null" >
+        F_ELETRI,
+      </if>
+      <if test="fGprsLac != null" >
+        F_GPRS_LAC,
+      </if>
+      <if test="fDataNum != null" >
+        F_DATA_NUM,
+      </if>
+      <if test="fCrc != null" >
+        F_CRC,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fGuid != null" >
+        #{fGuid,jdbcType=VARCHAR},
+      </if>
+      <if test="fBt != null" >
+        #{fBt,jdbcType=VARCHAR},
+      </if>
+      <if test="fLength != null" >
+        #{fLength,jdbcType=INTEGER},
+      </if>
+      <if test="fSjbxu != null" >
+        #{fSjbxu,jdbcType=VARCHAR},
+      </if>
+      <if test="fServerIp != null" >
+        #{fServerIp,jdbcType=VARCHAR},
+      </if>
+      <if test="fLocalhost != null" >
+        #{fLocalhost,jdbcType=VARCHAR},
+      </if>
+      <if test="fType != null" >
+        #{fType,jdbcType=VARCHAR},
+      </if>
+      <if test="fVersion != null" >
+        #{fVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="fOrder != null" >
+        #{fOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="fNetDate != null" >
+        #{fNetDate,jdbcType=VARCHAR},
+      </if>
+      <if test="fStatus != null" >
+        #{fStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="fEletri != null" >
+        #{fEletri,jdbcType=VARCHAR},
+      </if>
+      <if test="fGprsLac != null" >
+        #{fGprsLac,jdbcType=VARCHAR},
+      </if>
+      <if test="fDataNum != null" >
+        #{fDataNum,jdbcType=INTEGER},
+      </if>
+      <if test="fCrc != null" >
+        #{fCrc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.CQJjFlowSu.db.TFlowExample" resultType="java.lang.Integer" >
+    select count(*) from t_flow
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_flow
+    <set >
+      <if test="record.fGuid != null" >
+        F_GUID = #{record.fGuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fBt != null" >
+        F_BT = #{record.fBt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fLength != null" >
+        F_LENGTH = #{record.fLength,jdbcType=INTEGER},
+      </if>
+      <if test="record.fSjbxu != null" >
+        F_SJBXU = #{record.fSjbxu,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fServerIp != null" >
+        F_SERVER_IP = #{record.fServerIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fLocalhost != null" >
+        F_LOCALHOST = #{record.fLocalhost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fType != null" >
+        F_TYPE = #{record.fType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fVersion != null" >
+        F_VERSION = #{record.fVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fOrder != null" >
+        F_ORDER = #{record.fOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fNetDate != null" >
+        F_NET_DATE = #{record.fNetDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fStatus != null" >
+        F_STATUS = #{record.fStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fEletri != null" >
+        F_ELETRI = #{record.fEletri,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fGprsLac != null" >
+        F_GPRS_LAC = #{record.fGprsLac,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fDataNum != null" >
+        F_DATA_NUM = #{record.fDataNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.fCrc != null" >
+        F_CRC = #{record.fCrc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_flow
+    set F_GUID = #{record.fGuid,jdbcType=VARCHAR},
+      F_BT = #{record.fBt,jdbcType=VARCHAR},
+      F_LENGTH = #{record.fLength,jdbcType=INTEGER},
+      F_SJBXU = #{record.fSjbxu,jdbcType=VARCHAR},
+      F_SERVER_IP = #{record.fServerIp,jdbcType=VARCHAR},
+      F_LOCALHOST = #{record.fLocalhost,jdbcType=VARCHAR},
+      F_TYPE = #{record.fType,jdbcType=VARCHAR},
+      F_VERSION = #{record.fVersion,jdbcType=VARCHAR},
+      F_ORDER = #{record.fOrder,jdbcType=VARCHAR},
+      F_NET_DATE = #{record.fNetDate,jdbcType=VARCHAR},
+      F_STATUS = #{record.fStatus,jdbcType=VARCHAR},
+      F_ELETRI = #{record.fEletri,jdbcType=VARCHAR},
+      F_GPRS_LAC = #{record.fGprsLac,jdbcType=VARCHAR},
+      F_DATA_NUM = #{record.fDataNum,jdbcType=INTEGER},
+      F_CRC = #{record.fCrc,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.CQJjFlowSu.db.TFlow" >
+    update t_flow
+    <set >
+      <if test="fBt != null" >
+        F_BT = #{fBt,jdbcType=VARCHAR},
+      </if>
+      <if test="fLength != null" >
+        F_LENGTH = #{fLength,jdbcType=INTEGER},
+      </if>
+      <if test="fSjbxu != null" >
+        F_SJBXU = #{fSjbxu,jdbcType=VARCHAR},
+      </if>
+      <if test="fServerIp != null" >
+        F_SERVER_IP = #{fServerIp,jdbcType=VARCHAR},
+      </if>
+      <if test="fLocalhost != null" >
+        F_LOCALHOST = #{fLocalhost,jdbcType=VARCHAR},
+      </if>
+      <if test="fType != null" >
+        F_TYPE = #{fType,jdbcType=VARCHAR},
+      </if>
+      <if test="fVersion != null" >
+        F_VERSION = #{fVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="fOrder != null" >
+        F_ORDER = #{fOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="fNetDate != null" >
+        F_NET_DATE = #{fNetDate,jdbcType=VARCHAR},
+      </if>
+      <if test="fStatus != null" >
+        F_STATUS = #{fStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="fEletri != null" >
+        F_ELETRI = #{fEletri,jdbcType=VARCHAR},
+      </if>
+      <if test="fGprsLac != null" >
+        F_GPRS_LAC = #{fGprsLac,jdbcType=VARCHAR},
+      </if>
+      <if test="fDataNum != null" >
+        F_DATA_NUM = #{fDataNum,jdbcType=INTEGER},
+      </if>
+      <if test="fCrc != null" >
+        F_CRC = #{fCrc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where F_GUID = #{fGuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.CQJjFlowSu.db.TFlow" >
+    update t_flow
+    set F_BT = #{fBt,jdbcType=VARCHAR},
+      F_LENGTH = #{fLength,jdbcType=INTEGER},
+      F_SJBXU = #{fSjbxu,jdbcType=VARCHAR},
+      F_SERVER_IP = #{fServerIp,jdbcType=VARCHAR},
+      F_LOCALHOST = #{fLocalhost,jdbcType=VARCHAR},
+      F_TYPE = #{fType,jdbcType=VARCHAR},
+      F_VERSION = #{fVersion,jdbcType=VARCHAR},
+      F_ORDER = #{fOrder,jdbcType=VARCHAR},
+      F_NET_DATE = #{fNetDate,jdbcType=VARCHAR},
+      F_STATUS = #{fStatus,jdbcType=VARCHAR},
+      F_ELETRI = #{fEletri,jdbcType=VARCHAR},
+      F_GPRS_LAC = #{fGprsLac,jdbcType=VARCHAR},
+      F_DATA_NUM = #{fDataNum,jdbcType=INTEGER},
+      F_CRC = #{fCrc,jdbcType=VARCHAR}
+    where F_GUID = #{fGuid,jdbcType=VARCHAR}
+  </update>
+  
+  <resultMap type="java.util.Map" id="countMap">
+    <result column="F_TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="NUM" property="num" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getSensorCount" resultMap="countMap">
+  
+   select F_TYPE,count(*) as NUM from t_senesor group by F_TYPE
+  
+  </select>
+  
+   <resultMap id="senesorListMap" type="java.util.Map" >
+    <result column="F_GUID" property="fGuid" jdbcType="VARCHAR" />
+    <result column="F_ID" property="fId" jdbcType="VARCHAR" />
+    <result column="F_XH" property="fXh" jdbcType="VARCHAR" />
+    <result column="F_TYPE" property="fType" jdbcType="VARCHAR" />
+    <result column="F_JD" property="fJd" jdbcType="VARCHAR" />
+    <result column="F_WD" property="fWd" jdbcType="VARCHAR" />
+    <result column="F_STATUS" property="fStatus" jdbcType="VARCHAR" />
+    <result column="F_INSTALL_DATE" property="fInstallDate" jdbcType="VARCHAR" />
+    <result column="F_REPAIR_DATE" property="fRepairDate" jdbcType="VARCHAR" />
+    <result column="F_ELECTRIC" property="fElectric" jdbcType="VARCHAR" />
+    <result column="F_LAST_DATA_TIME" property="fLastDataTime" jdbcType="VARCHAR" />
+    <result column="F_SIM_NUMBER" property="fSimNumber" jdbcType="VARCHAR" />
+    <result column="F_OPERATOR" property="fOperator" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="querySensorList" resultMap="senesorListMap" parameterType="java.util.Map">
+   select * from t_senesor where 1=1 
+   <if test="fType!=null">
+    and F_TYPE =#{fType}
+   </if>  
+    <if test="fXh!=null">
+    and F_XH =#{fXh}
+   </if>  
+    <if test="fStatus!=null">
+    and F_STATUS =#{fStatus}
+   </if>  
+    <if test="fInstallTimeStart!=null">
+    and DATE_FORMAT(F_INSTALL_DATE,'%Y-%m-%d') &gt;= DATE_FORMAT(#{fInstallTimeStart},'%Y-%m-%d')
+   </if>  
+     <if test="fInstallTimeEnd!=null">
+    and DATE_FORMAT(F_INSTALL_DATE,'%Y-%m-%d') &lt;= DATE_FORMAT(#{fInstallTimeEnd},'%Y-%m-%d')
+   </if>  
+   limit #{start},#{end}
+  </select>
+  
+  <select id="countSensorList" resultType="java.lang.Integer" parameterType="java.util.Map">
+   select count(*) from t_senesor where 1=1 
+   <if test="fType!=null">
+    and F_TYPE =#{fType}
+   </if>  
+    <if test="fXh!=null">
+    and F_XH =#{fXh}
+   </if>  
+    <if test="fStatus!=null">
+    and F_STATUS =#{fStatus}
+   </if>  
+    <if test="fInstallTimeStart!=null">
+    and DATE_FORMAT(F_INSTALL_DATE,'%Y-%m-%d') &gt;= DATE_FORMAT(#{fInstallTimeStart},'%Y-%m-%d')
+   </if>  
+     <if test="fInstallTimeEnd!=null">
+    and DATE_FORMAT(F_INSTALL_DATE,'%Y-%m-%d') &lt;= DATE_FORMAT(#{fInstallTimeEnd},'%Y-%m-%d')
+   </if>  
+  </select>
+  
+  <select id="getSenesorDetail" parameterType="java.lang.String" resultMap="senesorListMap">
+  select * from  t_senesor where F_ID=#{fId}
+  </select>
+  
+  <resultMap id="FlowResultMap" type="java.util.Map" >
+    <id column="F_GUID" property="fGuid" jdbcType="VARCHAR" />
+    <result column="F_BT" property="fBt" jdbcType="VARCHAR" />
+    <result column="F_LENGTH" property="fLength" jdbcType="INTEGER" />
+    <result column="F_SJBXU" property="fSjbxu" jdbcType="VARCHAR" />
+    <result column="F_SERVER_IP" property="fServerIp" jdbcType="VARCHAR" />
+    <result column="F_LOCALHOST" property="fLocalhost" jdbcType="VARCHAR" />
+    <result column="F_TYPE" property="fType" jdbcType="VARCHAR" />
+    <result column="F_VERSION" property="fVersion" jdbcType="VARCHAR" />
+    <result column="F_ORDER" property="fOrder" jdbcType="VARCHAR" />
+    <result column="F_NET_DATE" property="fNetDate" jdbcType="VARCHAR" />
+    <result column="F_STATUS" property="fStatus" jdbcType="VARCHAR" />
+    <result column="F_ELETRI" property="fEletri" jdbcType="VARCHAR" />
+    <result column="F_GPRS_LAC" property="fGprsLac" jdbcType="VARCHAR" />
+    <result column="F_DATA_NUM" property="fDataNum" jdbcType="INTEGER" />
+    <result column="F_CRC" property="fCrc" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getSensorFlowList" parameterType="java.lang.String" resultMap="FlowResultMap">
+      select * from t_flow where F_LOCALHOST=#{fId} limit #{start},#{end}
+  </select>
+  
+   <select id="countSensorFlowList" parameterType="java.lang.String" resultType="java.lang.Integer">
+     select count(*) from t_flow where F_LOCALHOST=#{fId}
+  </select>
+  
+    <resultMap id="FlowDataResultMap" type="map" >
+    <id column="F_ID" property="fId" jdbcType="VARCHAR" />
+    <result column="F_FLOW_ID" property="fFlowId" jdbcType="VARCHAR" />
+    <result column="F_IP" property="fIp" jdbcType="VARCHAR" />
+    <result column="F_STATUS" property="fStatus" jdbcType="VARCHAR" />
+    <result column="F_RECEIVE_DATE" property="fReceiveDate" jdbcType="VARCHAR" />
+    <result column="F_DATA" property="fData" jdbcType="VARCHAR" />
+    <result column="F_ELECTRI" property="fElectri" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <select id="getSensorFlowDataList" parameterType="java.lang.String" resultMap="FlowDataResultMap">
+      select * from t_flow_data where F_IP=#{fId} limit #{start},#{end}
+  </select>
+  
+   <select id="countSensorFlowDataList" parameterType="java.lang.String" resultType="java.lang.Integer">
+     select count(*) from t_flow_data where F_IP=#{fId}
+  </select>
+  
+  <insert id="insertRecord" parameterType="string">
+     insert int t_record values(#{uuid},#{tel},#{fId},#{fStatus})
+  </insert>
+  
+</mapper>

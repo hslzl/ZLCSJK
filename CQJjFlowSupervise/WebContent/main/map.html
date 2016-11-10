@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+	body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=rlXxxbCtcrIvQp4LMe2Pl8WV"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript">
+		
+      
+       
+
+   
+
+	</script>
+	<title>map</title>
+</head>
+<body>
+	<div id="allmap"></div>
+</body>
+</html>
+<script type="text/javascript">
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");    // 创建Map实例
+	map.addControl(new BMap.MapTypeControl());   
+	map.centerAndZoom(new BMap.Point(106.115818,29.355814), 13);
+   setInterval(fresh,3000);
+	var data_info=[];
+    function fresh(){
+	
+	$.ajax(
+	{
+		url:"http://localhost:8080/CQJjFlowSupervise/getFlowInfo.do",
+		type:"post",
+		dataType:"json",
+		success:function(data){
+				data_info  = data.data;
+				 map.clearOverlays();
+				for(var i=0;i<data_info.length;i++){
+					var marker = new BMap.Marker(new BMap.Point(data_info[i][1],data_info[i][2])); 
+					var content = data_info[i][5];
+					map.addOverlay(marker);  
+					// openInfo2(content,marker);             // 将标注添加到地图中
+					addClickHandler(content,marker);
+				}
+			},
+	
+	 });
+  }
+
+	
+	var data_info1 = [[106.33591,28.846875,"江津古镇丁字口"]
+					];
+	
+	var opts = {
+				width : 250,     // 信息窗口宽度
+				height: 80,     // 信息窗口高度
+				title : "当前流量数据" , // 信息窗口标题
+				enableMessage:true//设置允许信息窗发送短息
+			   };
+       alert(data_info.length+"111");
+      			   
+	// for(var i=0;i<data_info.length;i++){
+	// 	var marker = new BMap.Marker(new BMap.Point(data_info[i][1],data_info[i][2])); 
+	// 	var content = data_info[i][3];
+	// 	map.addOverlay(marker);               // 将标注添加到地图中
+	// 	addClickHandler(content,marker);
+	// }
+	function addClickHandler(content,marker){
+		marker.addEventListener("click",function(e){
+		openInfo(content,e)}
+		);
+	}
+	function openInfo(content,e){
+		var p = e.target;
+		var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+		var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象 
+		map.openInfoWindow(infoWindow,point); //开启信息窗口
+	}	 
+	function openInfo2(content,mark){
+		var p =mark;
+		var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+		var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象 
+		map.openInfoWindow(infoWindow,point); //开启信息窗口
+	}	     
+	map.enableScrollWheelZoom(true);
+</script>

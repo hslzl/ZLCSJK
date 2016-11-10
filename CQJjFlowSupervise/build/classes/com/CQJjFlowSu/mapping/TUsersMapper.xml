@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.CQJjFlowSu.dao.TUsersMapper" >
+  <resultMap id="BaseResultMap" type="com.CQJjFlowSu.db.TUsers" >
+    <result column="F_USER_ID" property="fUserId" jdbcType="VARCHAR" />
+    <result column="F_USER_NAME" property="fUserName" jdbcType="VARCHAR" />
+    <result column="F_PASSWORD" property="fPassword" jdbcType="VARCHAR" />
+    <result column="F_DUTY" property="fDuty" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    F_USER_ID, F_USER_NAME, F_PASSWORD, F_DUTY
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.CQJjFlowSu.db.TUsersExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_users
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.CQJjFlowSu.db.TUsersExample" >
+    delete from t_users
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.CQJjFlowSu.db.TUsers" >
+    insert into t_users (F_USER_ID, F_USER_NAME, F_PASSWORD, 
+      F_DUTY)
+    values (#{fUserId,jdbcType=VARCHAR}, #{fUserName,jdbcType=VARCHAR}, #{fPassword,jdbcType=VARCHAR}, 
+      #{fDuty,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.CQJjFlowSu.db.TUsers" >
+    insert into t_users
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fUserId != null" >
+        F_USER_ID,
+      </if>
+      <if test="fUserName != null" >
+        F_USER_NAME,
+      </if>
+      <if test="fPassword != null" >
+        F_PASSWORD,
+      </if>
+      <if test="fDuty != null" >
+        F_DUTY,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fUserId != null" >
+        #{fUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="fUserName != null" >
+        #{fUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="fPassword != null" >
+        #{fPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="fDuty != null" >
+        #{fDuty,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.CQJjFlowSu.db.TUsersExample" resultType="java.lang.Integer" >
+    select count(*) from t_users
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_users
+    <set >
+      <if test="record.fUserId != null" >
+        F_USER_ID = #{record.fUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fUserName != null" >
+        F_USER_NAME = #{record.fUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fPassword != null" >
+        F_PASSWORD = #{record.fPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fDuty != null" >
+        F_DUTY = #{record.fDuty,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_users
+    set F_USER_ID = #{record.fUserId,jdbcType=VARCHAR},
+      F_USER_NAME = #{record.fUserName,jdbcType=VARCHAR},
+      F_PASSWORD = #{record.fPassword,jdbcType=VARCHAR},
+      F_DUTY = #{record.fDuty,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <select id="getUserByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select 
+    <include refid="Base_Column_List" />
+    from t_users
+    where 
+    F_USER_NAME=#{username}
+  </select>
+</mapper>
