@@ -1,0 +1,60 @@
+.fonttww
+{
+	font-size: 12px;  
+	font-family: 微软雅黑; 
+	color: #5b5b5b;
+}
+
+.fontftw
+{
+	font-size: 14px;  
+	font-family: 微软雅黑; 
+	color: #5b5b5b;
+}
+
+.fontstw
+{
+	font-size: 16px;  
+	font-family: 微软雅黑; 
+	color: #5b5b5b;
+}
+
+.fonttws
+{
+	font-size: 12px;  
+	font-family:宋体; 
+	color: #5b5b5b;
+}
+
+.fontfts
+{
+	font-size: 14px;  
+	font-family: 宋体; 
+	color: #5b5b5b;
+}
+
+.fontsts
+{
+	font-size: 16px;  
+	font-family:宋体; 
+	color: #5b5b5b;
+}
+
+.fontinfoEnter
+{
+	font-size: 13px;  
+	font-family: 微软雅黑; 
+	color: #5b5b5b;
+	padding-top:2px;
+	padding-left:80px;
+	width:60px;
+}
+.fontinfoEnterStandard
+{
+	font-size: 13px;  
+	font-family: 微软雅黑; 
+	color: #5b5b5b;
+	padding-top:2px;
+	padding-left:60px;
+	width:150px;
+}

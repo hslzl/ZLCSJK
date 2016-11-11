@@ -1,0 +1,269 @@
+<div style="width: 100%; height: 100%;" ng-show="visible">
+    <div class="subattribute">部门信息</div>
+    <div style="border-bottom: 1px solid rgb(196,197,204); padding: 10px 0px 10px 0px; width: 92%; margin-left: 3%">
+        <label class="fontftw" style="margin-left: 20px;">快速查找:</label>
+        <input id="search_right" style="width: 82%;" ng-model="subjectName" type="text" placeholder="输入部门名称、类型、职责、描述...">
+        <button class="btn btn-info" style="border: 0px; margin-top: 0px; background: url(images/button.png)  no-repeat center;" ng-click="searchSubject();">搜索</button>
+    </div>
+    <div style="padding: 10px 0px 10px 0px; width: auto; margin-left: 3%">
+        <div type="button" style="border: none; background: url(images/button.png)  no-repeat center;" class="btn btn-info" ng-click="addDept()">添加部门</div>
+        <div type="button" style="border: none;" class="btn btn-info" ng-click="delSelected()">批量删除</div>
+        <label >当前部门:{{currentPosition}}</label>
+        <div type="button" style="border:none; background: url(images/button.png); float:right; margin-right:200px;" class="btn btn-info" ng-click="returnFatherDept()">返回上级</div>
+    </div>
+    <!-- 部门信息table -->
+    <div style="height: 70%; width: 92%; margin-left: 3%">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr class="subattribute">
+                    <th rowspan="2" class="text-center" style="width: 5%">
+                        <input type="checkbox" ng-model="vm.allChecked" ng-change="vm.checkAll(vm.allChecked)" />
+                    </th>
+                    <th rowspan="2" style="width: 15%" class="text-center">部门名称</th>
+                    <th rowspan="2" style="width: 15%" class="text-center">类型</th>
+                    <th rowspan="2" style="width: 15%" class="text-center">职责</th>
+                    <th rowspan="2" style="width: 20%" class="text-center">描述</th>
+                    <th rowspan="2" style="width: 20%" class="text-center">操作</th>
+                </tr>
+            </thead>
+            <tbody ng-show="table_visible">
+                <tr ng-repeat="item in vm.items" style="height: 15px;">
+                    <td class="text-center">
+                        <input type="checkbox" ng-model="item.$checked" />
+                    </td>
+                    <td style="cursor: pointer;" ng-click="showSonDept(1,$index)" class="clickFont text-center">{{item['fDeptName']}}</td>
+                    <td class="text-center">{{item['fDepartmentType']}}</td>
+                    <td class="text-center">{{item['fDepartmentDuty']}}</td>
+                    <td class="text-center">{{item['fDepartmentDescription']}}</td>
+                    <td style="cursor: pointer;" class="text-center">
+                        <a class="glyphicon glyphicon-pencil" ng-click="editDept($index)">编辑</a>
+                        <a class="glyphicon glyphicon-remove" ng-click="delDept($index)">删除</a>
+                        <a class="glyphicon glyphicon-user" ng-click="membersEdit($index)">用户管理</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <progressbar class="progress-striped active" value="100" style="margin: 10% 40%;" ng-show="!table_visible">数据加载中....</progressbar>
+    </div>
+    <div id="searchPagetion" class="resultList resultListPagetion" style="height: 50px;margin: 10px auto;text-align: center;" ng-show="searchTotalItems>10">
+        <pagination style="height: 30px; " total-items="searchTotalItems" items-per-page="itemsPerPage" page="searchCurrentPage" on-select-page="loadDepts(page,'search')" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" boundary-links="true" max-size="4"></pagination>
+    </div>    
+    <div id="topPagetion" class="resultList resultListPagetion" style="height: 50px;margin: 10px auto;text-align: center;" ng-show="topTotalItems>10">
+        <pagination style="height: 30px;" total-items="topTotalItems" items-per-page="itemsPerPage" page="topCurrentPage" on-select-page="loadDepts(page,'top')" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" boundary-links="true" max-size="4"></pagination>
+    </div>
+    <div id="sonPagetion" class="resultList resultListPagetion" style="height: 50px;margin: 10px auto;text-align: center;" ng-show="sonTotalItems>10">
+        <pagination style="height: 30px;" total-items="sonTotalItems" items-per-page="itemsPerPage" page="sonCurrentPage" on-select-page="showSonDept(page,'')" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" boundary-links="true" max-size="4"></pagination>
+    </div>
+
+    <!-- 添加提示模态框 -->
+    <div class="modal fade" id="editDeptModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title text-center">{{modalShowName}}</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" style="width: 80%; margin: auto;" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="fatherDeptName" class="col-sm-3 control-label">上级部门:</label>
+                            <div class="col-sm-9">
+                                <input id="fatherDeptName" style="cursor: pointer;" ng-click="showFatherDept('选择上级部门')" ng-model="fatherDeptName" type="text" class="form-control" readonly placeholder="请选择...">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="deptName" class="col-sm-3 control-label">部门名称:</label>
+                            <div class="col-sm-9">
+                                <input id="deptName" ng-model="deptName" type="text" class="form-control" placeholder="输入文本...">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="deptDuty" class="col-sm-3 control-label">部门职责:</label>
+                            <div class="col-sm-9">
+                                <input id="deptDuty" ng-model="deptDuty" type="text" class="form-control" placeholder="输入文本...">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="deptType" class="col-sm-3 control-label">部门类型:</label>
+                            <div class="col-sm-9">
+                                <select id="deptType" ng-model="deptType" class="form-control">
+                                    <option>管理</option>
+                                    <option>执能</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="deptPhone" class="col-sm-3 control-label">部门电话:</label>
+                            <div class="col-sm-9">
+                                <input id="deptPhone" ng-model="deptPhone" type="text" class="form-control" placeholder="输入电话...">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="deptDesc" class="col-sm-3 control-label">部门简介:</label>
+                            <div class="col-sm-9">
+                                <textarea id="deptDesc" ng-model="deptDesc" class="form-control" rows="5" style="resize: none;" placeholder="输入文本..."></textarea>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="alert alert-danger" role="alert" ng-show="showError">{{messages}}</div>
+                    <div class="alert alert-success" role="alert" ng-show="showSuccess">{{messages}}</div>
+                </div>
+                <div class="modal-footer" style="text-align: center">
+                    <button type="button" class="btn btn-primary" ng-click="addOrModifyDeptSubmit()">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除提示模态框 -->
+    <div class="modal fade bs-example-modal-sm" id="delDeptModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">提示</h4>
+                </div>
+                <div class="modal-body">是否删除部门【{{selectedDeptNames.join()}}】?</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+                    <button type="button" class="btn btn-primary" ng-click="delDeptSubmit()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--用户管理模态框-->
+    <div class="modal fade" id="optMembersModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title text-center">{{modalShowName}}</h4>
+                </div>
+                <div class="modal-body" style="padding: 2px;">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-5" style="padding: 0px;">
+                                <div style="height: 320px; overflow: auto; border: 1px  rgb(196,197,204)  solid;">
+                                    <table class="table table-bordered table-hover" style="word-break: break-all;">
+                                        <thead>
+                                            <tr class="subattribute">
+                                                <th colspan="4" style="text: center; text-align: center;">部门用户列表</th>
+                                            </tr>
+                                            <tr class="subattribute">
+                                                <th rowspan="2" class="text-center">
+                                                    <input type="checkbox" ng-model="vmIn.allChecked" ng-change="vmIn.checkAll(vmIn.allChecked)" />
+                                                </th>
+                                                <th rowspan="2" style="width:75px;">姓名</th>
+                                                <th rowspan="2">所属部门</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody ng-show="table_in" style="overflow-y: visible">
+                                            <tr ng-repeat="item in vmIn.items">
+                                                <td class="text-center">
+                                                    <input type="checkbox" ng-model="item.$checked" />
+                                                </td>
+                                                <td>{{item['fUserName']}}</td>
+                                                <td>{{item['fDepartmentName']}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <progressbar class="progress-striped active" value="100" style="margin: 90px 40px;" ng-show="!table_in">数据加载中....</progressbar>
+                                </div>
+                                <div class="resultList resultListPagetion" style="height: 50px;" ng-show="table_in">
+                                    <pagination style="height: 30px; margin-top: 10px; margin-bottom: 8px;" total-items="inTotalItems" items-per-page="inItemsPerPage" page="inCurrentPage" on-select-page="loadMembersByDept('in',page)" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" boundary-links="true" max-size="3"></pagination>
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <div class="row" style="text-align: center; height: 60px;">
+                                    <button type="button" class="btn btn-primary" style="margin: 70px 0" ng-click="optMembers('add')">&lt;&lt;</button>
+                                </div>
+                                <div class="row" style="text-align: center; height: 60px;">
+                                    <button type="button" class="btn btn-primary" style="margin: 70px 0" ng-click="optMembers('remove')">&gt;&gt;</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="padding: 0px;">
+                                <div style="height: 320px; overflow: auto; border: 1px rgb(196,197,204) solid;">
+                                    <table class="table table-bordered table-hover" style="word-break: break-all;">
+                                        <thead>
+                                            <tr class="subattribute">
+                                                <th colspan="4" style="text: center; text-align: center;">非部门用户列表</th>
+                                            </tr>
+                                            <tr class="subattribute">
+                                                <th rowspan="2" class="text-center">
+                                                    <input type="checkbox" ng-model="vmEx.allChecked" ng-change="vmEx.checkAll(vmEx.allChecked)" />
+                                                </th>
+                                                <th rowspan="2" style="width:75px;">姓名</th>
+                                                <th rowspan="2">所属部门</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody ng-show="table_ex">
+                                            <tr ng-repeat="item in vmEx.items" style="height: 15px;">
+                                                <td class="text-center">
+                                                    <input type="checkbox" ng-model="item.$checked" />
+                                                </td>
+                                                <td>{{item['fUserName']}}</td>
+                                                <td>{{item['fDepartmentName']}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <progressbar class="progress-striped active" value="100" style="margin: 90px 40px;" ng-show="!table_ex">数据加载中....</progressbar>
+                                </div>
+                                <div class="resultList resultListPagetion" style="height: 50px;" ng-show="table_ex">
+                                    <pagination style="height: 30px; margin-top: 10px; margin-bottom: 8px;" total-items="exTotalItems" items-per-page="exItemsPerPage" page="exCurrentPage" on-select-page="loadMembersByDept('ex',page)" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" boundary-links="true" max-size="3"></pagination>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 选择上级部门框 -->
+    <div class="modal fade" id="fatherDeptModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title text-center">{{fatherDeptModalName}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid" style="height: 250px">
+                        <div class="row" style="height: 100%; overflow: auto;">
+                            <div class="zTreeDemoBackground left" ng-show="tree_visible">
+                                <ul id="diskTypeDistrictre" class="ztree"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="text-align: center">
+                    <button type="button" class="btn btn-primary" ng-click="writeFatherDept()">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <!-- 操作完成提示框 -->
+    <div class="modal fade bs-example-modal-sm" style="top:20%" id="deptAlertModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">提示</h4>
+                </div>
+                <div class="modal-body">{{messages}}</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>   
+</div>

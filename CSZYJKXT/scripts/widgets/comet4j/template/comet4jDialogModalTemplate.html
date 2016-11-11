@@ -1,0 +1,12 @@
+<div class="ngdialog-message" >
+<div style="color:#ffffff;background-color:#0160a2;height:45px; text-align: center;font-size: 24px;font-family: 微软雅黑;padding-top:10px;">新增投诉举报</div>
+<div style="margin-top:20px;margin-bottom:20px; ">
+<div style="margin-top:5px;margin-bottom:5px; width: 90%;margin-left:5%;font-size: 16px;font-family: 微软雅黑;color:#5b5b5b;" ng-repeat="v in value">
+投诉名称：{{v['fEntityName']}}</div>
+</div>
+</div>
+<div style="border-bottom: 1px solid rgb(196,197,204);width: 90%;margin-left:5%;"></div>
+<div class="ngdialog-buttons">
+<button type="button" class="ngdialog-button ngdialog-button-secondary" style="margin-left:150px;"ng-click="cancel()">取  消</button>
+<!--<button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="lookUp()">查 看</button> -->
+</div>

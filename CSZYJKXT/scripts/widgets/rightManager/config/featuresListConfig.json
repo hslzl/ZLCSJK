@@ -1,0 +1,22 @@
+﻿[
+	{
+		"layerID":1,
+		"layerName":"地名点搜索",
+		"layerURL":"http://222.178.118.101:8399/arcgis/rest/services/CQ_ZCQ_POI/MapServer/0",
+		"outFields": ["NAME", "ADDRESS", "SSQX"],
+		"returnObjFields":["NAME", "ADDRESS", "SSQX"],
+		"displayFiledName":["名称","地址","所属区县"],
+		"queryFilter":"",
+		"searchType":"",
+		"where":"",
+		"pupopTpl":"<div><div>名称：${NAME}&nbsp;</div><div>地址：${ADDRESS}&nbsp;</div><div>所属区县：${SSQX}&nbsp;</div>"
+	},
+	{
+		"layerID":2,
+		"layerName":"区县界_面",
+		"layerURL":"http://www.digitalcq.com/RemoteRest/services/CQ_XZQH/MapServer/1",
+		"outFields": ["MC", "SJLY", "QXDM"],
+		"returnObjFields":["MC", "SJLY", "QXDM"],
+		"displayFiledName":["名称","数据来源","区县代码"]
+	}
+]

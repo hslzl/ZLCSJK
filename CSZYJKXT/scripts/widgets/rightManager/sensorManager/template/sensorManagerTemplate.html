@@ -1,0 +1,253 @@
+<div id="content" style="width:100%;height:100%;" ng-show="visible">
+	<div class="subattribute" >用户信息</div>
+	<div style="border-bottom: 1px solid rgb(196,197,204); padding:10px 0px 10px 0px;width:92%;margin-left:3%">
+		<label class="fontftw" style="margin-left:20px;">快速查找:</label>
+		<input id="search_m" style="width:82%;" ng-model="subjectName" type="text" placeholder="输入用户名、真实姓名、部门...">
+		<button class="btn btn-info" style="border:0px;margin-top:0px;background:url(images/button.png)  no-repeat center;"  ng-click="searchSubject();">搜索</button>
+	</div>
+	<div style="padding:10px 0px 10px 0px;width:92%;margin-left:3%">
+		<button type="button" style="border:none;background:url(images/button.png)  no-repeat center;" class="btn btn-info"  ng-click="addMember()">添加用户</button>
+		<button type="button" style="border:none;" class="btn btn-info" ng-click="batDisableUser()">批量操作</button>   	
+    	<input id="mmSelectDept" style="width:250px;cursor: pointer;" ng-model="mmDeptName" ng-click="showDept('请选择要查看的部门')" readonly placeholder="请选择要查看的部门">	
+	</div>
+	<div style="max-height:70%;width:92%;margin-left:3%;min-height:70%;overflow-y:auto;">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr class="subattribute">
+					<th rowspan="2" class="text-center" style="width:5%;">
+						<input type="checkbox" ng-model="vm.allChecked" ng-change="vm.checkAll(vm.allChecked)"/>
+					</th>
+					<th rowspan="2" style="width:8%;" class="text-center">登录名</th>
+					<th rowspan="2" style="width:8%;" class="text-center">姓名</th>
+					<th rowspan="2" style="width:10%" class="text-center">所属部门</th>
+					<th rowspan="2" style="width:10%" class="text-center">所属食药监局</th>
+					<th rowspan="2" style="width:10%" class="text-center">所属食药监所</th>
+					<th rowspan="2" style="width:10%" class="text-center">电话</th>
+					<th rowspan="2" style="width:15%" class="text-center">描述</th>
+					<th rowspan="2" style="width:15%" class="text-center">操作</th>
+				</tr>
+			</thead>
+			<tbody ng-show="table_visible">
+				<tr ng-repeat="item in vm.items" style="height:15px;">
+					<td class="text-center">
+						<input type="checkbox" ng-model="item.$checked"/>
+					</td>
+					<td class="text-center">{{item['fUserName']}}</td>
+					<td class="text-center">{{item['fRealName']}}</td>
+					<td class="text-center">{{item['fDepartment']}}</td>
+					<td class="text-center">{{item['fGovernOrg']}}</td>
+					<td class="text-center">{{item['fStation']}}</td>
+					<td class="text-center">{{item['fTelephone']}}</td>
+					<td class="text-center">{{item['fDesc']}}</td>
+					<td style="cursor:pointer;"class="text-center">
+						<a class="glyphicon glyphicon-pencil" ng-click="editMember($index)">编辑</a>
+						<a class="glyphicon glyphicon-remove" ng-click="disableUser($index)">{{item['fUserStatus']==1?'删除':'恢复'}}</a>
+						<a class="glyphicon glyphicon-user" ng-click="rolesEdit($index)">角色分配</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<progressbar id="progressbar" class="progress-striped active" value="100" style="margin: 10% 40%;" ng-show="!table_visible">数据加载中....</progressbar>
+	</div>
+	<div id="topPagetion_mm" class="resultList resultListPagetion" ng-if="topTotalItems>10" style="margin: 0 auto;">
+		<pagination style="height:30px;margin-top:10px;margin-bottom:8px;" total-items="topTotalItems" items-per-page="itemsPerPage" page="topCurrentPage" on-select-page="loadMembers(page,'top')" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" boundary-links="true" max-size="4"></pagination>
+	</div>
+	<div id="searchPagetion_mm" class="resultList resultListPagetion" ng-if="searchTotalItems>10" style="margin: 0 auto;">
+		<pagination style="height:30px;margin-top:10px;margin-bottom:8px;" total-items="searchTotalItems" items-per-page="itemsPerPage" page="searchCurrentPage" on-select-page="loadMembers(page,'search')" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" boundary-links="true" max-size="4"></pagination>
+	</div>	
+	<div id="sonPagetion_mm" class="resultList resultListPagetion" ng-if="sonTotalItems>10" style="margin: 0 auto;">
+		<pagination style="height:30px;margin-top:10px;margin-bottom:8px;" total-items="sonTotalItems" items-per-page="itemsPerPage" page="sonCurrentPage" on-select-page="showUserByDept(page,'son')" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" boundary-links="true" max-size="4"></pagination>
+	</div>
+	<!-- 添加提示模态框 -->
+	<div class="modal fade" id="editMemberModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title text-center">{{modalShowName}}</h4>
+				</div>
+				<div class="modal-body">
+					<form id="memberForm" role="form" style="width:100%;margin:auto;" class="form-horizontal">
+						<div class="form-group">
+							<label for="realName" class="col-sm-2 control-label">姓名:</label>
+							<div class="col-sm-4">
+								<input id="realName" name="realName" ng-model="realName"  type="text" class="form-control" placeholder="输入文本..."></div>
+							<label for="memberName" class="col-sm-2 control-label">登录名:</label>
+							<div class="col-sm-4">
+								<input id="memberName" name="memberName" ng-model="memberName"  type="text" class="form-control" placeholder="输入文本..."></div>
+						</div>
+						<div class="form-group">
+							<label for="memberAge" class="col-sm-2 control-label">年龄:</label>
+							<div class="col-sm-4">
+								<input id="memberAge" name="memberAge" ng-model="memberAge"  type="number"  min='18' max='99' class="form-control" placeholder="输入年龄..."></div>
+							<label for="genderMan" class="col-sm-2 control-label">性别:</label>
+							<div class="col-sm-4">
+								<label class="radio-inline">
+									<input type="radio" ng-model="memberGender" name="memberGender" id="genderMan" value="1" checked>男</label>
+								<label class="radio-inline">
+									<input type="radio" ng-model="memberGender" name="memberGender" id="genderWoman" value="0">女</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="memberPassword" class="col-sm-2 control-label">登录密码:</label>
+							<div class="col-sm-4">
+								<input id="memberPassword" name="memberPassword" ng-model="memberPassword"  type="text" class="form-control" placeholder="6-20个字符.."></div>
+							<label for="againPassword" class="col-sm-2 control-label">确认密码:</label>
+							<div class="col-sm-4">
+								<input id="againPassword" name="againPassword" ng-model="againPassword"  type="text" class="form-control" placeholder="再次输入密码..."></div>
+						</div>
+						<div class="form-group">
+							<label for="deptName" class="col-sm-2 control-label">所属部门:</label>
+							<div class="col-sm-4">
+								<input id="deptName" style="cursor: pointer;" ng-model="deptName" class="form-control" ng-click="showDept('选择上级部门')" type="text" readonly placeholder="请选择..."></div>
+
+							<label for="memberDuty" class="col-sm-2 control-label">职务:</label>
+							<div class="col-sm-4">
+								<input id="memberDuty" ng-model="memberDuty" type="text" class="form-control" placeholder="输入文本..."></div>
+						</div>
+						<div class="form-group">
+							<label for="grid" class="col-sm-2 control-label">所属片区:</label>
+							<div class="col-sm-10">
+								<!-- <input ng-model="grid" id="grid" name="grid" class="form-control" disabled="true" ng-click="setGrid()"> -->
+									<select id="orginfo_mm" class="fontftw infoInput" style="width:128px; heigth:54px;" ng-model="mdistrictg" ng-options="d.name for d in org" ng-change="regionChange('org')"> </select>						
+									<select id="stationinfo_mm" class="fontftw infoInput" style="width:158px; heigth:54px;" ng-model="mdistrict" ng-options="di.name for di in mdistrictg.station" ng-change="regionChange('station')"> </select>	
+									<select id="gridinfo_mm" class="fontftw infoInput" style="width:158px; heigth:54px;" ng-model="mdistrictp" ng-options="mdf.name for mdf in mdistrict.place"> </select>
+								</div>
+						</div>
+						<div class="form-group">
+							<label for="memberTel" class="col-sm-2 control-label">手机号码:</label>
+							<div class="col-sm-4">
+								<input id="memberTel" name="memberTel" ng-model="memberTel"  type="tel" class="form-control" ng-pattern="/^1[3|4|5|8][0-9]\d{4,8}$/" placeholder="输入电话.."></div>
+
+							<label for="memberOfficeTel" class="col-sm-2 control-label">部门电话:</label>
+							<div class="col-sm-4">
+								<input id="memberOfficeTel" name="memberOfficeTel" ng-model="memberOfficeTel"  type="tel" class="form-control" placeholder="输入部门电话.."></div>
+						</div>
+						<div class="form-group">
+							<label for="memberDesc" class="col-sm-2 control-label">描述:</label>
+							<div class="col-sm-10">
+								<textarea id="memberDesc" ng-model="memberDesc" class="form-control" rows="5" style="resize: none;" placeholder="输入文本..."></textarea>
+							</div>
+						</div>
+					</form>
+					<div class="alert alert-danger" role="alert" ng-show="showError">{{messages}}</div>
+					<div class="alert alert-success" role="alert" ng-show="showSuccess">{{messages}}</div>
+				</div>
+				<div class="modal-footer" style="text-align:center">
+					<button type="button" class="btn btn-primary" ng-click="addOrModifyMemberSubmit()">保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 删除提示模态框 -->
+	<div class="modal fade bs-example-modal-sm" id="delMemberModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">提示</h4>
+				</div>
+				<div class="modal-body ng-binding">是否删除用户【{{selectedMemberNames.join()}}】?</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+					<button type="button" class="btn btn-primary" ng-click="delMemberSubmit()">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 设置用户失效/恢复模态框 -->
+	<div class="modal fade bs-example-modal-sm" id="diableMemberModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">提示</h4>
+				</div>
+				<div class="modal-body ng-binding">{{message}}</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+					<button type="button" class="btn btn-primary" ng-click="disableMemberSubmit()">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 角色管理模态框 -->
+	<div class="modal fade" id="optRolesModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title text-center">{{modalShowName}}</h4>
+				</div>
+				<div class="modal-body" style="padding:2px;" >
+					<div class="container-fluid" style="height:250px">
+						<div class="row" style="height:100%;overflow:auto;">
+							<div class="zTreeDemoBackground left" ng-show="tree_visible">
+								<ul id="roleTree" class="ztree"></ul>
+							</div>
+					<!-- 		<table>
+								<tr ng-repeat="role in roles">
+									<td><input type="checkBox"></td>
+									<td>{{role['fRoleName']}}</td>
+								</tr>
+							</table> -->
+						</div>
+						<progressbar class="progress-striped active" value="100" style="margin:-135px 150px;" ng-show="!tree_visible">数据加载中....</progressbar>
+					</div>
+				</div>
+				<div class="modal-footer" style="text-align:center">
+					<button type="button" class="btn btn-primary" ng-click="saveUserRoles()">保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 删除修改成功提示模态框 -->
+	<div class="modal fade bs-example-modal-sm" id="memberAlertModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">提示</h4>
+				</div>
+				<div class="modal-body">{{messages}}</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 选择上级部门框/要查看的部门 -->
+	<div class="modal fade" id="fatherDeptModal2" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title text-center">{{deptModalName}}</h4>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid" style="height: 250px">
+						<div class="row" style="height: 100%; overflow: auto;">
+							<div class="zTreeDemoBackground left">
+								<ul id="diskTypeDistrictre2" class="ztree"></ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer" style="text-align: center">
+					<button type="button" class="btn btn-primary" ng-click="writeDept()">确定</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

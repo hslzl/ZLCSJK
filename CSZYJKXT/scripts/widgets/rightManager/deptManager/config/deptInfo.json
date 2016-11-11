@@ -1,0 +1,30 @@
+[
+	{
+		"guid":"100",
+		"name":"局领导",
+		"duty":"管理",
+		"deptype":"管理",
+		"description":"部门描述XXXXXX"
+	},
+	{
+		"guid":"101",
+		"name":"办公室",
+		"duty":"工作安排",
+		"deptype":"执能",
+		"description":"部门描述XXXXXX"
+	},
+	{
+		"guid":"103",
+		"name":"审批科",
+		"duty":"行政审批、登记",
+		"deptype":"执能",
+		"description":"部门描述XXXXXX"
+	},
+	{
+		"guid":"104",
+		"name":"市场主体科",
+		"duty":"市场主体信息管理",
+		"deptype":"管理",
+		"description":"部门描述XXXXXX"
+	}
+]

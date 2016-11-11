@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+    <title>采砂作业监控系统</title>
+    <link rel="stylesheet" type="text/css" href="/arcgis/arcgis_js_api/library/3.9/js/dojo/dijit/themes/claro/claro.css" />
+    <link rel="stylesheet" type="text/css" href="/arcgis/arcgis_js_api/library/3.9/js/esri/css/esri.css" />
+    <link rel="stylesheet" type="text/css" href="/arcgis/arcgis_js_api/library/3.9/js/dojo/dojo/resources/dojo.css" />
+    <link rel="stylesheet" type="text/css" href="scripts/vendor/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/customStyle.css" />
+    <link rel="stylesheet" type="text/css" href="css/leftmenu.css" />
+    <link rel="stylesheet" type="text/css" href="css/rightManager.css" />
+    <link rel="stylesheet" type="text/css" href="css/outdoorAdManager.css" />
+    <link rel="stylesheet" type="text/css" href="css/font.css" />
+    <link rel="stylesheet" type="text/css" href="scripts/vendor/ngDialog/css/ngDialog.css" />
+    <link rel="stylesheet" type="text/css" href="scripts/vendor/ngDialog/css/ngDialog-theme-default.css" />
+    <link rel="stylesheet" type="text/css" href="css/ngDialog-theme-default.css" />
+    <link rel="stylesheet" type="text/css" href="scripts/vendor/ngDialog/css/ngDialog-theme-plain.css" />
+    <link rel="stylesheet" type="text/css" href="scripts/vendor/jquery/css/zTreeStyle.css" />
+    <link rel="stylesheet" type="text/css" href="css/alert.css" />
+    <script type="text/javascript" src="scripts/vendor/jquery/js/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts/vendor/jquery/js/jquery.ztree.all-3.5.min.js"></script>
+    <script type="text/javascript" src="scripts/vendor/md5.js"></script>
+    <script type="text/javascript" src="scripts/helpers/jAlert.js"></script>
+    <script type="text/javascript" src="scripts/vendor/postal/lodash.js"></script>
+    <script type="text/javascript" src="scripts/vendor/postal/conduit.min.js"></script>
+    <script type="text/javascript" src="scripts/vendor/postal/postal.js"></script>
+    <script type="text/javascript" src="scripts/vendor/angular/angular.min.js"></script>
+    <script type="text/javascript" src="scripts/vendor/ngDialog/js/ngDialog.min.js"></script>
+    <script type="text/javascript" src="scripts/vendor/angular/angular-cookies.min.js"></script>
+    <script type="text/javascript" src="scripts/vendor/ueditor/third-party/zeroclipboard/ZeroClipboard.js"></script>
+    <script type="text/javascript" src="scripts/vendor/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="scripts/vendor/bootstrap/js/ui-bootstrap-tpls-0.10.0.js"></script>
+    <script type="text/javascript" src="scripts/vendor/angular/i18n/angular-locale_zh-cn.js"></script>
+    <script type="text/javascript" src="scripts/vendor/angular/angular-ueditor.js"></script>
+    <script type="text/javascript" src="scripts/vendor/Datepicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="scripts/vendor/highcharts.js"></script>
+    <script type="text/javascript" src="scripts/helpers/comet4j.js"></script>
+    <script type="text/javascript" charset="utf-8" src="scripts/vendor/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="scripts/vendor/ueditor/ueditor.all.js"></script>
+    <script type="text/javascript" src="/arcgis/arcgis_js_api/library/3.9/js/dojo/dojo/dojo.js"></script>
+    <script type="text/javascript" src="scripts/main.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=n1WIEoyuMpnHNcNFGEIwUtRB"></script>
+
+
+</head>
+<body class="claro" ng-controller="AppController" style="overflow-x: hidden; overflow-y: hidden;">
+<div class="headerContainer" >
+    <div  style="background-image: url(images/headermenu/logobg.png); height:100px;width:615px; float:left;">
+        <div  style="background-image: url(images/headermenu/3.png); height:100px;width:586px; float:left;"></div>
+    </div>
+    <div style=" background-image: url(images/headermenu/logobgr.png); height:100px; width: 100%; margin: 0px 0px 0px 0px;">
+        <div class="mapPageTools" ng-class="{'active':selectMenu == 'rightManager'}"  style="float:right;background-image: url(images/headermenu/sysManager.png);" ng-click="menuClick('rightManager')" ng-show="rightManagerVisible"></div>
+        <div class="mapPageTools" ng-class="{'active':selectMenu == ''}"  style="float:right;background-image: url(images/headermenu/tjfx.png);" ng-click="menuClick('1')" ng-show="infoManagerVisible"></div>      
+        <div class="mapPageTools" ng-class="{'active':selectMenu == ''}"  style="float:right;background-image: url(images/headermenu/jczc.png);" ng-click="menuClick('1')" ng-show="infoManagerVisible"></div>
+        <div class="mapPageTools" ng-class="{'active':selectMenu == ''}"  style="float:right;background-image: url(images/headermenu/yjfk.png);" ng-click="menuClick('3')" ng-show="infoManagerVisible"></div>
+        <div class="mapPageTools" ng-class="{'active':selectMenu == 'infoManager'}"  style="float:right;background-image: url(images/headermenu/infosearch.png);" ng-click="menuClick('infoManager')" ng-show="infoManagerVisible"></div>
+    </div>
+    <user-manager></user-manager>
+</div>
+
+
+<div id="ContentContainer" class="ContentContainer" >
+        <div class="mapInfoContainer"  id="mapinfoid">
+          <div id="infoList">
+           <right-manager></right-manager> 
+            <info-manager></info-manager>
+
+            </div>
+             <flush-manager></flush-manager> 
+           
+        </div>
+       
+        <div class="mapContainer" id = "mapContainerid">
+            <member-manager></member-manager>
+            <sensor-manager></sensor-manager>
+            <info-Search-High></info-Search-High>
+            <info-Edit></info-Edit>
+            <map-manager></map-manager>    
+            
+        </div>
+ 
+</div>
+</body>
+</html>

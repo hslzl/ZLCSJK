@@ -1,0 +1,98 @@
+<div id="content" style="width:100%;height:100%; "  ng-show="visible">
+	<div class="subattribute" >设备信息编辑</div>
+  </br>
+<div style="width:90%;margin-left:1%;" collapse="false">
+				<table style="width:80%;  margin: 10px auto; ">
+					<tr style="width:100%;height:35px;valign:middle;">
+					<td class="fonttww infoenTableth">设备ID：<font color="red"> </font></td>
+						<td style="padding-top:5px;" class="infoTablePut">
+							<input class="fontftw form-control" style="z-index: 1;height:32px;width:100%;" ng-model="fId" type="text" placeholder="请输入......" >
+						</td>
+						<td class="fonttww infoenTableth">序号：</td>
+						<td style="padding-top:5px;" class="infoTablePut">
+							<input class="fontftw form-control" style="z-index: 1;height:32px;width:100%;" ng-model="fXh" type="text" placeholder="请输入......" >
+						</td>
+						
+						
+					</tr>
+					<tr>
+						<td class="fonttww infoenTableth">设备类型：</td>
+						<td style="padding-top:5px;"class="infoTablePut">
+							<select class="fontftw infoInput" style="z-index: 2;width:100%;height:32px;"  ng-model="fType" >	
+							<option value="">--请选择--</option>
+							<option value="声学传感器">声学传感器</option>
+							<option value="中继器">中继器</option>
+							<option value="岸边网关">岸边网关</option>
+							</select>
+						</td>
+						<td class="fonttww infoenTableth">设备状态：<font color="red"> </font></td>
+						<td style="padding-top:5px;"class="infoTablePut" colspan="3">
+							<input class="fontftw form-control" style="z-index: 1;height:32px;width:100%;" ng-model="fStatus" type="text" placeholder="请输入......" >
+						</td>
+
+					</tr>
+					<tr style="width:100%;height:35px;valign:middle;">
+						<td class="fonttww infoenTableth">设备经度：<font color="red"> </font></td>
+						<td style="padding-top:5px;" class="infoTablePut">
+							<input class="fontftw form-control" style="z-index: 1;height:32px;width:100%;" ng-model="fJd" type="text" placeholder="请输入......" >
+						</td>
+						<td class="fonttww infoenTableth">设备纬度：<font color="red"> </font></td>
+						<td style="padding-top:5px;" class="infoTablePut">
+							<input class="fontftw form-control" style="z-index: 1;height:32px;width:100%;" ng-model="fWd" type="text" placeholder="请输入......" > 
+						</td>
+					    
+					</tr>
+
+					<tr style="width:100%;height:35px;valign:middle;">
+					
+						<td class="fonttww infoenTableth">安装时间：<font color="red"> </font></td>
+						<td style="padding-top:5px;"class="infoTablePut">
+							<input class="fontftw infoInput" style="z-index:2;width:100%;height:32px;" type="text" id="fInstall" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"/>
+						</td>
+						<td class="fonttww infoenTableth">维修时间：<font color="red"> </font></td>
+						<td style="padding-top:5px;" class="infoTablePut">
+							<input class="fontftw infoInput" style="z-index:2;width:100%;height:32px;" type="text" id="fRepair" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"/>
+						</td>
+						
+					<tr>
+						<td class="fonttww infoenTableth">电池电压值：<font color="red"> </font></td>
+						<td style="padding-top:5px;" class="infoTablePut">
+							
+							<input class="fontftw form-control" style="z-index: 1;height:32px;width:100%;" ng-model="fElectric" type="text" placeholder="请输入......" >
+						</td>
+						<td class="fonttww infoenTableth">最后数据包发回时间：<font color="red"> </font></td>
+						<td style="padding-top:5px;"class="infoTablePut">
+							<input class="fontftw infoInput" style="z-index:2;width:100%;height:32px;" type="text" id="fLastData" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"/>
+						</td>
+					</tr>
+					</tr>
+					<tr style="width:100%;height:35px;valign:middle;">
+						
+						<td class="fonttww infoenTableth" ng-show="fType=='岸边网关'">运营商：</td>
+						<td style="padding-top:5px;"class="infoTablePut" ng-show="fType=='岸边网关'">
+						<select class="fontftw infoInput" style="z-index: 2;width:100%;height:32px;"  ng-model="fOperator" >	
+							<option value="">--请选择--</option>
+							<option value="移动">移动</option>
+							<option value="联通">联通</option>
+							<option value="电信">电信</option>
+							</select>
+						</td>
+						<td class="fonttww infoenTableth" ng-show="fType=='岸边网关'">SIM卡号：</td>
+						<td style="padding-top:5px;" class="infoTablePut" colspan="3" ng-show="fType=='岸边网关'">
+							<input class="fontftw form-control" style="z-index: 1;height:32px;width:100%;" ng-model="fSimNumber" type="text" placeholder="请输入......" >
+						</td>
+					</tr>
+				</table>
+				</div>
+
+	     <div style="width:45%;height:50px;margin-left:25%;margin-top:35px;">
+			<div style="width:25%;float:left;" class="buttonattribute" ng-click="btnSubmit()">提交</div>
+			<div style="width:25%;float:left;" class="buttonattribute" ng-click="initOperate()">还原数据</div>
+			<div style="width:25%;float:left;" class="buttonattribute" ng-click="addMatch()">坐标解析</div>
+			<div style="width:25%;float:left;" class="buttonattribute" ng-click="cancel()">取消</div>
+		</div>
+
+<div class="subattribute" ng-show="isOpen">地址坐标解析</div>
+  </br>
+   
+</div>

@@ -1,0 +1,28 @@
+<div class="ngdialog-message" style="height:170px;background: url(images/loginModal.png) no-repeat center;background-position:top center;">
+	<div style="color:#ffffff;height:45px; text-align: center;font-size: 24px;font-family: 微软雅黑;padding-top:10px;"></div>
+	<div style="margin-top:20px;margin-bottom:20px; ">
+		<div style="margin-top:5px;margin-bottom:5px; width: 90%;margin-left:5%;font-size: 16px;font-family: 微软雅黑;color:#5b5b5b;">
+			<form novalidate class="form-horizontal" role="form" name="loginForm" style="margin-top:50px;">
+				<div class="form-group">
+					<label for="personName" class="col-sm-4 control-label">登录名称:</label>
+					<div class="col-sm-7" >
+						<input type="text" class="form-control input-sm" name="name" ng-model="user.name" id="personName" placeholder="用户名称" required ng-keypress="loginbyKeypress($event);" />
+					</div>
+					<small ng-show="loginForm.name.$error.required" style="color:red; font-size:xx-small">*</small>
+				</div>
+				<div class="form-group">
+					<label for="personPassword" class="col-sm-4 control-label">登录密码:</label>
+					<div class="col-sm-7" >
+						<input type="password" class="form-control input-sm" name="password" ng-model="user.password" id="personPassword" placeholder="用户密码" required ng-keypress="loginbyKeypress($event);"/>
+					</div>
+					<small ng-show="loginForm.password.$error.required" style="color:red; font-size:xx-small">*</small>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div style="width: 90%;height:23px;margin-left:5%;text-align:center;color:red; font-size:xx-small">{{message}}</div>
+<div class="ngdialog-buttons">
+	<button type="button" class="ngdialog-button ngdialog-button-primary"  style="margin-left:150px;" ng-click="login()">登  录</button>
+	<button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="cancel()">取  消</button>
+</div>

@@ -1,0 +1,191 @@
+<div style="width:100%;height:100%;" ng-show="visible">
+	<div class="subattribute" >系统资源信息</div>
+	<div style="border-bottom: 1px solid rgb(196,197,204); padding:10px 0px 10px 0px;width:92%;margin-left:3%;">
+		<label class="fontftw" style="margin-left:20px;">快速查找:</label>
+		<input id="search_sys" style="width:82%;" ng-model="subjectName" type="text">
+		<button class="btn btn-info" style="border:0px;margin-top:0px;background:url(images/button.png)  no-repeat center;"  ng-click="searchSubject();">搜索</button>
+	</div>
+	<div style="padding:10px 0px 10px 0px;width:92%;margin-left:3%">
+		<button type="button" style="border:none;background:url(images/button.png)  no-repeat center;" class="btn btn-info" style="margin-top:10px;" ng-click="addres()">添加资源</button>
+		<button type="button" style="border:none;" class="btn btn-info" ng-click="delSelected()">批量删除</button>
+        <label >当前资源:{{currentPosition}}</label>
+        <div type="button" style="border: none; background: url(images/button.png); float:right; margin-right:100px;" class="btn btn-info" ng-click="returnFatherRes()">返回上级</div>
+   </div>
+	<div style="height:70%;width:92%;margin-left:3%">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr class="subattribute">
+					<th rowspan="2" class="text-center" style="width:5%">
+						<input type="checkbox" ng-model="vm.allChecked" ng-change="vm.checkAll(vm.allChecked)"/>
+					</th>
+					<th rowspan="2" style="width:15%" class="text-center">资源名称</th>
+					<th rowspan="2" style="width:30%" class="text-center">资源URL</th>
+					<th rowspan="2" style="width:10%" class="text-center">从属系统</th>
+					<th rowspan="2" style="width:10%" class="text-center">更新时间</th>
+					<th rowspan="2" style="width:20%" class="text-center">操作</th>
+				</tr>
+			</thead>
+			<tbody ng-show="table_visible">
+				<tr ng-repeat="item in vm.items" style="height:15px;">
+					<td class="text-center">
+						<input type="checkbox" ng-model="item.$checked"/>
+					</td>
+					<td style="cursor: pointer;" ng-click="showSonRes(1,$index)" class="clickFont text-center">{{item['fResourceName']}}</td>
+					<td class="text-center">{{item['fResourceUrl']}}</td>
+					<td class="text-center">{{item['fSystemName']}}</td>
+					<td class="text-center">{{item['fResourceUpdateDate'] | date : 'yyyy-MM-dd hh:mm:ss EEEE'}}</td>
+					<td style="cursor:pointer;"class="text-center">
+						<a class="glyphicon glyphicon-pencil" ng-click="editres($index)">编辑</a>
+						<a class="glyphicon glyphicon-remove" ng-click="delres($index)">删除</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<progressbar class="progress-striped active" value="100" style="margin: 10% 40%;" ng-show="!table_visible">数据加载中....</progressbar>
+	</div>
+	<div id="searchPagetion_res" class="resultList resultListPagetion" style="height: 50px;margin: 10px auto;text-align: center;" ng-show="searchTotalItems>10">
+		<pagination
+				style="height: 30px;"
+				total-items="searchTotalItems"
+				items-per-page="itemsPerPage"
+				page="searchCurrentPage"
+				on-select-page="loadresources(page,'search')"
+				previous-text="&lsaquo;" next-text="&rsaquo;"
+				first-text="&laquo;" last-text="&raquo;"
+				boundary-links="true" max-size="4">
+		</pagination>
+	</div>
+	<div id="topPagetion_res" class="resultList resultListPagetion" style="height: 50px;margin: 10px auto;text-align: center;" ng-show="topTotalItems>10">
+		<pagination
+				style="height: 30px;"
+				total-items="topTotalItems"
+				items-per-page="itemsPerPage"
+				page="topCurrentPage"
+				on-select-page="loadresources(page,'top')"
+				previous-text="&lsaquo;" next-text="&rsaquo;"
+				first-text="&laquo;" last-text="&raquo;"
+				boundary-links="true" max-size="4">
+		</pagination>
+	</div>
+	<div id="sonPagetion_res" class="resultList resultListPagetion" style="height: 50px;margin: 10px auto;text-align: center;" ng-show="sonTotalItems>10">
+		<pagination style="height: 30px;" total-items="sonTotalItems" items-per-page="itemsPerPage" page="sonCurrentPage" on-select-page="showSonRes(page,'')" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" boundary-links="true" max-size="4"></pagination>
+	</div>
+
+	<!-- 添加提示模态框 -->
+	<div class="modal fade" id="editresModal" style="top:20%" tabindex="-1" aria-hidden="true" >
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title text-center">{{modalShowName}}</h4>
+				</div>
+				<div class="modal-body">
+					<form id="resForm" role="form" style="width:100%;margin:auto;" class="form-horizontal">
+						<div class="form-group">
+							<label for="fResName" class="col-sm-2 control-label">资源名称:</label>
+							<div class="col-sm-5">
+								<input id="fResName" name="fResName" ng-model="fResName"  type="text"  required class="form-control" placeholder="输入文本..."></div>
+						</div>
+						<div class="form-group">
+							<label for="fUri" class="col-sm-2 control-label">资源URL:</label>
+							<div class="col-sm-5">
+								<input id="fUri" name="fUri" ng-model="fUri"  type="text"  class="form-control" required placeholder="输入文本..."></div>
+						</div>
+						<div class="form-group">
+							<label for="fUri" class="col-sm-2 control-label">URL编号:</label>
+							<div class="col-sm-5">
+								<input id="fUriNumber" name="fUriNumber" ng-model="fUriNumber"  type="text"  class="form-control" required placeholder="输入文本..."></div>
+						</div>
+						<div class="form-group">
+							<label for="fFatherResName" class="col-sm-2 control-label">父级资源:</label>
+							<div class="col-sm-5">
+								<input id="fFatherResName" name="fFatherResName" ng-model="fFatherResName"  type="text"  style="cursor:pointer" class="form-control" ng-click="showFatherRes()" required readonly placeholder="点击选择"></div>
+						</div>
+						<div class="form-group">
+							<label for="fSysId" class="col-sm-2 control-label">所属系统:</label>
+							<div class="col-sm-5">
+								<select id="fSysId"  class="fontftw infoInput" style="width:100%;height:32px;" ng-model="fSysId" required >
+									<option value="" >请选择</option>
+									<option value="100000" >后台管理系统</option>
+									<option value="200000" >分类监管系统</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="resDesc" class="col-sm-2 control-label">描述:</label>
+							<div class="col-sm-10">
+								<textarea id="resDesc" ng-model="resDesc" class="form-control" rows="5" style="resize: none;" placeholder="输入文本..."></textarea>
+							</div>
+						</div>
+					</form>
+					<div class="alert alert-danger" role="alert" ng-show="showError">{{messages}}</div>
+					<div class="alert alert-success" role="alert" ng-show="showSuccess">{{messages}}</div>
+				</div>
+				<div class="modal-footer" style="text-align:center">
+					<button type="button" class="btn btn-primary" ng-click="addOrModifyresSubmit()">保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 删除提示模态框 -->
+	<div class="modal fade bs-example-modal-sm" style="top:20%" id="delresModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">提示</h4>
+				</div>
+				<div class="modal-body ng-binding">是否删除系统资源【{{selectedresNames.join()}}】?</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+					<button type="button" class="btn btn-primary" ng-click="delresSubmit()">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 删除成功提示模态框 -->
+	<div class="modal fade bs-example-modal-sm" style="top:20%" id="resAlertModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">提示</h4>
+				</div>
+				<div class="modal-body">{{messages}}</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 选择父级资源 -->
+	<div class="modal fade" id="resModal" style="top:20%"tabindex="-1" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title text-center">请选择父级资源</h4>
+	      </div>
+	      <div class="modal-body" style="padding:2px;" >
+		      	<div class="container-fluid" style="height:250px">
+				  <div class="row" style="height:100%;overflow:auto;">
+				  	<div class="zTreeDemoBackground left" ng-show="tree_visible">
+						<ul id="srsResTree" class="ztree"></ul>
+					</div>
+				  </div>
+					<progressbar class="progress-striped active" value="100" style="margin:-135px 150px;" ng-show="!tree_visible">数据加载中....</progressbar>
+				</div>
+	      </div>
+	      <div class="modal-footer" style="text-align:center">
+	        <button type="button" class="btn btn-primary" ng-click="saveFatherRes()">确定</button>
+	       	<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</div>

@@ -1,0 +1,181 @@
+<div style="width:100%;height:100%;" ng-show="visible">
+	<div class="subattribute" >角色信息</div>
+	<div style="border-bottom: 1px solid rgb(196,197,204);padding:10px 0px 10px 0px;width:92%;margin-left:3% ">
+		<label class="fontftw" style="margin-left:20px;">快速查找:</label>
+		<input id="search_r" style="width:82%;" ng-model="subjectName" type="text" placeholder="输入角色名、所属系统、角色编号、描述...">
+		<button class="btn btn-info" style="border:0px;margin-top:0px;background:url(images/button.png)  no-repeat center;"  ng-click="searchSubject();">搜索</button>
+	</div>
+	<div style="padding:10px 0px 10px 0px;width:92%;margin-left:3%">
+		<button type="button" style="border:none;background:url(images/button.png)  no-repeat center;" class="btn btn-info" style="margin-top:10px;" ng-click="addRole()">添加角色</button>
+		<button type="button" style="border:none;" class="btn btn-info" ng-click="delSelected()">批量删除</button>
+		<select id="roleSysName" name="roleSysName" ng-model="roleSysName">
+			<option value="">--请选择所要查看的系统--</option>
+			<option value="00">分类监管平台</option>
+			<option value="01">后台管理系统</option>
+		</select>						
+	</div>
+	<div style="height:70%;width:92%;margin-left:3%">
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr class="subattribute">
+				<th rowspan="2" class="text-center" style="width:5%">
+					<input type="checkbox" ng-model="vm.allChecked" ng-change="vm.checkAll(vm.allChecked)"/>
+				</th>
+				<th rowspan="2" style="width:15%;" class="text-center">角色名</th>
+				<th rowspan="2" style="width:15%;" class="text-center">所属系统</th>
+				<th rowspan="2" style="width:15%;" class="text-center">角色编号</th>
+				<th rowspan="2" style="width:20%;" class="text-center">描述</th>
+				<th rowspan="2" style="width:20%;" class="text-center">操作</th>
+			</tr>
+		</thead>
+		<tbody ng-show="table_visible">
+			<tr ng-repeat="item in vm.items" style="height:15px;">
+				<td class="text-center">
+					<input type="checkbox" ng-model="item.$checked"/>
+				</td>
+				<td  class="text-center">{{item['groupName']}}</td>
+				<td  class="text-center">{{item['fSystemName']}}</td>
+				<td  class="text-center">{{item['fRoleNumber']}}</td>
+				<td  class="text-center">{{item['fRoleDescription']}}</td>
+				<td style="cursor:pointer;" class="text-center">
+					<a class="glyphicon glyphicon-pencil" ng-click="editRole($index)">编辑</a>
+					<a class="glyphicon glyphicon-remove" ng-click="delRole($index)">删除</a>
+					<a class="glyphicon glyphicon-user" ng-click="rightsEdit($index)">资源分配</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<progressbar class="progress-striped active" value="100" style="margin: 10% 40%;" ng-show="!table_visible">数据加载中....</progressbar>
+	</div>
+	<div class="resultList resultListPagetion" style="height:50px;" ng-show="totalItems>10">
+		<pagination style="height:30px;margin-top:10px;margin-bottom:8px;" total-items="totalItems" items-per-page="itemsPerPage" page="currentPage" on-select-page="loadRoles(page,'all')" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" boundary-links="true" max-size="8"></pagination>
+	</div>
+	<!-- 添加提示模态框 -->
+	<div class="modal fade" id="editRoleModal" style="top:20%" tabindex="-1" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title text-center">{{modalShowName}}</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form id="RoleForm" role="form" style="width:100%;margin:auto;" class="form-horizontal">
+			  <div class="form-group">
+				<label for="roleName" class="col-sm-3 control-label">角色名称:</label>
+			    <div class="col-sm-5">
+			    	<input id="roleName" name="roleName" ng-model="roleName"  type="text" class="form-control" placeholder="输入文本...">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="roleCode" class="col-sm-3 control-label">角色编号:</label>
+				    <div class="col-sm-5">
+						<input id="roleCode" name="roleCode" ng-model="roleCode"  type="text" class="form-control" placeholder="输入文本...">
+					</div>
+			  </div>
+			  <div class="form-group">
+			    <label for="roleState" class="col-sm-3 control-label">角色状态:</label>
+				    <div class="col-sm-5">
+						<select id="roleState" name="roleState" ng-model="roleState"  class="form-control" >
+							<option value="">--请选择--</option>
+							<option value="在线">在线</option>
+							<option value="不在线">不在线</option>
+						</select>						
+					</div>
+			  </div>
+			  <div class="form-group">
+			    <label for="roleType" class="col-sm-3 control-label">角色类型:</label>
+				    <div class="col-sm-5">
+						<select id="roleType" name="roleType" ng-model="roleType"  class="form-control" >
+							<option value="">--请选择--</option>
+							<option value="管理">管理</option>
+							<option value="被管理">被管理</option>
+						</select>						
+					</div>
+			  </div>
+			  <div class="form-group">
+			    <label for="sysName" class="col-sm-3 control-label">所属系统:</label>
+				    <div class="col-sm-5">
+						<select id="sysName" name="sysName" ng-model="sysName"  class="form-control" >
+							<option value="">--请选择--</option>
+							<option value="00">分类监管平台</option>
+							<option value="01">后台管理系统</option>
+						</select>						
+					</div>
+			  </div>			  
+			  <div class="form-group">
+		  		<label for="roleDesc" class="col-sm-3 control-label">描述:</label>
+		  		<div class="col-sm-8">
+					<textarea id="roleDesc" ng-model="roleDesc" class="form-control" rows="5" style="resize: none;" placeholder="输入文本..."></textarea>
+				</div>
+			</div>
+			</form>
+			<div class="alert alert-danger" role="alert" ng-show="showError">{{messages}}</div>
+			<div class="alert alert-success" role="alert" ng-show="showSuccess">{{messages}}</div>
+	      </div>
+	      <div class="modal-footer" style="text-align:center">
+	        <button type="button" class="btn btn-primary" ng-click="addOrModifyRoleSubmit()">保存</button>
+	       	<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- 删除提示模态框 -->
+	<div class="modal fade bs-example-modal-sm" id="delRoleModal" tabindex="-1" aria-hidden="true">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title">提示</h4>
+	      </div>
+	      <div class="modal-body ng-binding">
+	        	是否删除角色【{{selectedRoleNames.join()}}】?
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+	        <button type="button" class="btn btn-primary" ng-click="delRoleSubmit()">确定</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- 角色资源分配模态框  -->
+	<div class="modal fade" id="optRightsModal" style="top:20%"tabindex="-1" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title text-center">{{modalShowName}}</h4>
+	      </div>
+	      <div class="modal-body" style="padding:2px;" >
+		      	<div class="container-fluid" style="height:250px">
+				  <div class="row" style="height:100%;overflow:auto;">
+				  	<div class="zTreeDemoBackground left" ng-show="tree_visible"> 
+						<ul id="rightTree" class="ztree"></ul>
+					</div>
+				  </div>
+					<progressbar class="progress-striped active" value="100" style="margin:-135px 150px;" ng-show="!tree_visible">数据加载中....</progressbar>
+				</div>
+	      </div>
+	      <div class="modal-footer" style="text-align:center">
+	        <button type="button" class="btn btn-primary" ng-click="saveRoleRights()">保存</button>
+	       	<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- 操作成功提示模态框 -->
+	<div class="modal fade bs-example-modal-sm" id="roleAlertModal" tabindex="-1" aria-hidden="true">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	      	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">提示</h4>
+	      </div>
+	      <div class="modal-body">
+	        	{{messages}}
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</div>

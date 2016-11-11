@@ -1,0 +1,392 @@
+html {
+    min-height:100%;
+    height:100%;
+}
+
+body {
+    margin:0;
+    padding:0;
+    min-height:100%;
+    height:100%;
+}
+
+.pagination>li>a:hover, 
+.pagination>li>span:hover, 
+.pagination>li>a:focus, 
+.pagination>li>span:focus 
+{
+    cursor: pointer;
+}
+
+.headerContainer {
+    height: 100px;
+    min-height: 80px;
+    width: 100%;    
+}
+
+.ContentContainer {
+    margin-top: 0px;
+    background-color:white;
+    /* height:100%; */
+    width:100%;
+}
+.active {
+          background-color : #4169E1;
+  }
+.mapInfoContainer {
+    border-color: white;
+    width: 329px;
+    float:left;
+    border-right: 1px solid rgb(196,197,204);  
+}
+
+.InfoContainer {
+    border-color: white;
+    height:100%;
+    min-height:100%;
+    float:left;
+    border-right: 1px solid rgb(196,197,204);  
+}
+.mapContainer {
+    height:100%;
+    min-height:100%;
+    width: auto;
+    margin: 0px 0px 0px 329px;   
+}
+
+.tooltip-inner
+{
+    background-color:#edf6ff;
+    color:#01588f;
+    font-weight:bold;
+}
+
+
+
+
+.infowindow .window .top .right .user .layout
+{
+    overflow:hidden;
+}
+
+.esriScalebar{
+    position: relative;
+}
+
+.mapPageTools
+{
+    width:80px;
+    height:99px;
+    background-repeat: no-repeat;
+    background-position: center; 
+    cursor:pointer; 
+    float:left;
+    padding-top:16px;
+    padding-left:10px;
+}
+
+
+a.list-group-item
+{
+    color: #2a6496
+}
+
+.list-group-item
+{
+    border: 1px solid #ddd;
+}
+
+
+.mapinfo_but {
+    position: absolute;
+    z-index: 1000;
+    left: 329px;
+    top: 50%;
+    width: 17px;
+    height: 63px;
+    overflow: hidden;
+}
+.mapinfo_but_open .mapinfo_but_span{background-position:-161px -21px}
+.mapinfo_but_open_on .mapinfo_but_span{background-position:-170px -21px}
+.mapinfo_but_close_on .mapinfo_but_span{background-position:-147px -21px}
+.mapinfo_but_con {
+    width: 20px;
+    height: 63px;
+    background: url(../images/index_f7f0192.png);
+    cursor: pointer;
+    background-position: -171px -42px;
+    background-repeat: no-repeat;
+}
+.mapinfo_but_div {
+    position: absolute;
+}
+.mapinfo_but_span {
+    display: block;
+    width: 4px;
+    height: 7px;
+    overflow: hidden;
+    margin: 27px 0 0 6px;
+    background: url(../images/index_f7f0192.png) no-repeat -137px -21px;
+}
+
+.closeBtn-normal{
+    background: url(../images/usergroupmanager/close_normal.png) no-repeat;
+}
+
+.closeBtn-over{
+    background: url(../images/usergroupmanager/close_over.png) no-repeat;
+}
+
+.closeBtn{
+   position: relative;
+   right: -168px;
+   top: 0px; 
+   height: 13px;
+   width: 13px;
+   cursor:pointer;
+   
+}
+
+.panel-title>a
+{
+    cursor: pointer;
+    color: rgb(67,101,144);
+}
+.panel-heading
+{
+    cursor: pointer;
+    background-color: #c8e5f6;
+	font-family: 微软雅黑;
+	font-size: 15px;
+	color:#0a4484;
+	font-weight:bold;
+    width:100%;
+}
+.panel
+{
+    background-color: transparent;
+}
+
+.panel-default>.panel-heading
+{
+    background-color: transparent;
+    position: absolute;
+}
+
+td, th {
+    /*padding: 5px 0px;*/
+}
+
+.subTitle
+{
+    background-color: #dce6fb;
+    width: 100%;
+    height: 44px;
+    padding: 10px;
+    font-family: 微软雅黑;
+    font-size: 16px;
+    margin-bottom: 30px;
+    color: #30519a;
+}
+
+/* .sublist
+{
+	width:100%;
+	height:100%; 
+	background-color: #e7f6f6;
+} */
+
+.subattribute
+{
+    background-color: #ffffff;
+    width: 92%;
+    height: 44px;
+    margin-left:3%;
+    padding-top: 10px;
+    font-family: 微软雅黑;
+    font-size: 16px;
+    color: #30519a;
+    border-bottom: 1px solid rgb(196,197,204); 
+}
+
+.subItemTitle
+{
+    font-size: 14px;
+    font-weight: bolder;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.fontftw
+{
+    font-size: 14px;  
+    font-family: 微软雅黑; 
+    color: #5b5b5b;
+}
+
+.resultListContainer
+{
+    display: -moz-box;
+    display: -webkit-box;
+    -moz-box-orient: vertical;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+    width: 329px;
+}
+
+.resultListContent
+{
+    -moz-box-flex: 1;
+    -webkit-box-flex: 1;
+    box-flex:1;
+    overflow-y: auto;
+    overflow: auto;
+}
+
+.resultListPagetion
+{
+    display: -moz-box;
+    display: -webkit-box;
+    display: box;
+    -moz-box-align: center;
+    -moz-box-pack: center;
+    box-align: center;
+    box-pack: center;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+}
+
+.resultList
+{
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+ 
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(0,0,0,0.1); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+
+.buttonattribute
+{
+    cursor:pointer;
+    height:30px;
+    background:url(../images/button.png) no-repeat center;
+    font-size: 16px;  
+    font-family: 微软雅黑; 
+    color: #ffffff; 
+    text-align:center;
+    padding-top:3px;
+}
+.tableselect
+{
+    background-color:#98d1fa;
+}
+.insert{
+    width:auto;
+    height:auto;
+    background-color:#E7F6F6;
+    overflow-y:auto;
+    /* min-width: 913px; */
+}
+
+.modalsm{
+    width: 34%;
+    margin-left: 33%;
+    margin-top: 200px;
+    overflow: hidden;
+}
+
+.modal-lg {
+    width: 700x;
+}
+
+.modallawcase
+{
+    top: 200px;
+    overflow: hidden;
+}
+
+.infoInput:focus,
+.infoInput:focus,
+.infoInput:hover,
+.infoInput:hover
+ {
+	border-color: #66afe9;
+	outline: 0;
+	  -webkit-box-shadow: inset 0 1px 1pxrgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+	box-shadow: inset 0 1px 1pxrgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+.infoInput
+{
+  padding: 2px 2px;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.clickFont
+{
+    font-size: 14px;  
+    font-family: 微软雅黑;    
+    cursor:pointer;
+}
+
+.clickFont:hover{
+    color: #0462FE;
+    text-decoration: underline;
+} 
+.infoenTableth{
+    width:10%;
+    min-width:85px;
+    text-align:right;
+    padding-right:5px;
+    margin-left: 5px;
+}
+
+.infoWindowGlyphicon
+{
+    cursor:pointer;
+    width:22px;
+    text-align:center;
+    height:30px;
+    color: #8e8e8e;
+    margin-top:-1px;
+    padding-top:20px;
+}
+.glyphicon-info-down{
+    background-image: url(../images/infodown.png);
+    background-repeat: no-repeat;
+    margin-top:8px;
+    width:13px; 
+    height:6px;
+}
+
+.glyphicon-info-right{
+    background-image: url(../images/inforight.png);
+    background-repeat: no-repeat;
+    margin-top:8px;
+    margin-left:3px;
+    width:6px; 
+    height:13px;
+}
